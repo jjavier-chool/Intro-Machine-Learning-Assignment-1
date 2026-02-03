@@ -2,7 +2,9 @@ import numpy as np
 
 """
 Intro to Machine Learning Assignment 1
-Students: Jackie Javier, etc
+Encompasses the solution to Task 1 and the function
+implementation for Task 4.
+Students: Jackie Javier, e.t.c.
 Built from code provided by the textbook.
 """
 class AdalineGD:
