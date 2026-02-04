@@ -3,7 +3,7 @@ The first assignment for CS429. Initial implementations of AdalineGD and Logisti
 
 ## TODO:
 - Task 1 modifications to AdalineAndLR.py
-- Ensure Task2_Test.py is correct
+- Ensure Task2_Test.py is correct (fixed some stuff, probably good)
 - Task 3
 - Task 4 modification to AdalineAndLR.py + new test file
 
@@ -12,8 +12,6 @@ For Task 2, run:
 ```
 python Task2_Test.py
 ```
-Because the data links given in the book return a 404, make sure that the data files are in the correct location (/data).
-
 It is probably necessary to downgrade numpy or test in a separate environment with numpy 1.0 due to some jank between the book's code and numpy 2.0.
 
 Environment method I used:

@@ -10,69 +10,82 @@ Encompasses the solution to Task 2.
 Students: Jackie Javier, e.t.c.
 Built from code provided by the textbook (pg42).
 """
-# Importing example data 
-# (no longer found at given links from the book)
-iris = pd.read_csv('data/iris.data',
+# Importing example data
+iris = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data',
                  header = None)
-wine = pd.read_csv('data/wine.data',
+wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data',
                  header = None)
 
 # Use first 100 samples, setosa + versicolor (need binary)
-y = iris.iloc[0:100, 4].values
+y_iris = iris.iloc[0:100, 4].values
 # Use first 100 samples, again to keep binary (?)
-y2 = wine.iloc[0:100, 0].values
+y_wine = wine.iloc[0:100, 0].values
 
 # Convert labels to {0, 1}
-y = np.where(y == 'Iris-setosa', 0, 1)
-y2 = np.where(y == 1, 0, 1)
+y_iris = np.where(y_iris == 'Iris-setosa', 0, 1)
+y_wine = np.where(y_wine == 1, 0, 1)
 
 # sepal length, sepal width, petal length, petal width
-X = iris.iloc[0:100, 0:4].values
+X_iris = iris.iloc[0:100, 0:4].values
 # Ommitting the labels (0)
-X2 = wine.iloc[0:100, 1:14].values
+X_wine = wine.iloc[0:100, 1:14].values
 
-fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(10, 4))
+# Standardization
+X_iris_std = np.copy(X_iris)
+X_iris_std[:,0] = (X_iris[:,0] - X_iris[:,0].mean()) / X_iris[:,0].std()
+X_iris_std[:,1] = (X_iris[:,1] - X_iris[:,1].mean()) / X_iris[:,1].std()
+X_wine_std = np.copy(X_wine)
+X_wine_std[:,0] = (X_wine[:,0] - X_wine[:,0].mean()) / X_wine[:,0].std()
+X_wine_std[:,1] = (X_wine[:,1] - X_wine[:,1].mean()) / X_wine[:,1].std()
+
+# Establishing number of epochs and learning rate value
+test_n = 30
+test_eta = 0.01
+
+fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
 
 # Iris
-ada1 = AdalineGD(n_iter=15, eta=0.1).fit(X, y)
+ada_iris = AdalineGD(n_iter=test_n, eta=test_eta).fit(X_iris_std, y_iris)
 ax[0][0].plot(
-    range(1, len(ada1.losses_) + 1),
-    np.log10(ada1.losses_),
+    range(1, len(ada_iris.losses_) + 1),
+    ada_iris.losses_,
     marker='o'
 )
 ax[0][0].set_xlabel('Epochs')
-ax[0][0].set_ylabel('log(Mean squared error)')
-ax[0][0].set_title('AdalineGD Iris (eta=0.1)')
+ax[0][0].set_ylabel('Loss')
+ax[0][0].set_title('AdalineGD Iris')
 
-lr1 = LogisticRegressionGD(n_iter=15, eta=0.1).fit(X, y)
+lr_iris = LogisticRegressionGD(n_iter=test_n, eta=test_eta).fit(X_iris_std, y_iris)
 ax[0][1].plot(
-    range(1, len(lr1.losses_) + 1),
-    np.log10(lr1.losses_),
+    range(1, len(lr_iris.losses_) + 1),
+    lr_iris.losses_,
     marker='o'
 )
 ax[0][1].set_xlabel('Epochs')
-ax[0][1].set_ylabel('log(Change in magnitude)')
-ax[0][1].set_title('LogisticRegressionGD Iris (eta=0.1)')
+ax[0][1].set_ylabel('Loss')
+ax[0][1].set_title('LogisticRegressionGD Iris')
 
 # Wine
-ada2 = AdalineGD(n_iter=15, eta=0.1).fit(X2, y2)
+ada_wine = AdalineGD(n_iter=test_n, eta=test_eta).fit(X_wine_std, y_wine)
 ax[1][0].plot(
-    range(1, len(ada2.losses_) + 1),
-    np.log10(ada2.losses_),
+    range(1, len(ada_wine.losses_) + 1),
+    ada_wine.losses_,
     marker='o'
 )
 ax[1][0].set_xlabel('Epochs')
-ax[1][0].set_ylabel('log(Mean squared error)')
-ax[1][0].set_title('AdalineGD Wine (eta=0.1)')
+ax[1][0].set_ylabel('Loss')
+ax[1][0].set_title('AdalineGD Wine')
 
-lr2 = LogisticRegressionGD(n_iter=15, eta=0.1).fit(X2, y2)
+lr_wine = LogisticRegressionGD(n_iter=test_n, eta=test_eta).fit(X_wine_std, y_wine)
 ax[1][1].plot(
-    range(1, len(lr2.losses_) + 1),
-    np.log10(lr2.losses_),
+    range(1, len(lr_wine.losses_) + 1),
+    lr_wine.losses_,
     marker='o'
 )
 ax[1][1].set_xlabel('Epochs')
-ax[1][1].set_ylabel('log(Change in magnitude)')
-ax[1][1].set_title('LogisticRegressionGD Wine (eta=0.1)')
+ax[1][1].set_ylabel('Loss')
+ax[1][1].set_title('LogisticRegressionGD Wine')
 
+plt.tight_layout()
 plt.show()
+plt.savefig("task2.png")
