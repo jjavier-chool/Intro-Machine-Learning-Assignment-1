@@ -18,8 +18,8 @@ wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wi
 
 # Use first 100 samples, setosa + versicolor (need binary)
 y_iris = iris.iloc[0:100, 4].values
-# Use first 100 samples, again to keep binary (?)
-y_wine = wine.iloc[0:100, 0].values
+# Use first 129 samples, again to keep binary (?)
+y_wine = wine.iloc[0:129, 0].values
 
 # Convert labels to {0, 1}
 y_iris = np.where(y_iris == 'Iris-setosa', 0, 1)
@@ -28,18 +28,14 @@ y_wine = np.where(y_wine == 1, 0, 1)
 # sepal length, sepal width, petal length, petal width
 X_iris = iris.iloc[0:100, 0:4].values
 # Ommitting the labels (0)
-X_wine = wine.iloc[0:100, 1:14].values
+X_wine = wine.iloc[0:129, 1:14].values
 
 # Standardization
-X_iris_std = np.copy(X_iris)
-X_iris_std[:,0] = (X_iris[:,0] - X_iris[:,0].mean()) / X_iris[:,0].std()
-X_iris_std[:,1] = (X_iris[:,1] - X_iris[:,1].mean()) / X_iris[:,1].std()
-X_wine_std = np.copy(X_wine)
-X_wine_std[:,0] = (X_wine[:,0] - X_wine[:,0].mean()) / X_wine[:,0].std()
-X_wine_std[:,1] = (X_wine[:,1] - X_wine[:,1].mean()) / X_wine[:,1].std()
+X_iris_std = (X_iris - X_iris.mean(axis=0)) / X_iris.std(axis=0)
+X_wine_std = (X_wine - X_wine.mean(axis=0)) / X_wine.std(axis=0)
 
 # Establishing number of epochs and learning rate value
-test_n = 30
+test_n = 60
 test_eta = 0.01
 
 fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
