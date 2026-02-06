@@ -4,5 +4,6 @@ __pycache__/
 # Virtual environment
 adaline-env/
 
-# Saved Figures
+# Saved Figures and text files
 *.png
+*.txt

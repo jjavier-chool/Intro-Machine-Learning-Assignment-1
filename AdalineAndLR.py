@@ -52,14 +52,12 @@ class AdalineGD:
 
         """
 
-        # Absorbing the bias. hstack will stack the original with
-        # a column of ones.
+        # Absorbing the bias. hstack will stack the original with a column of ones.
         X_bias = np.hstack([X, np.ones((X.shape[0], 1))])
 
         rgen = np.random.RandomState(self.random_state)
         self.w_ = rgen.normal(loc=0.0,
                               scale=0.01, size=X_bias.shape[1])
-        #self.b_ = np.float_(0.)
         self.losses_ = []
 
         for i in range(self.n_iter):
@@ -67,14 +65,13 @@ class AdalineGD:
             output = self.activation(net_input)
             errors = (y - output)
             self.w_ += self.eta * 2.0 * X_bias.T.dot(errors) / X_bias.shape[0]
-            #self.b_ += self.eta * 2.0 * errors.mean()
             loss = (errors**2).mean()
             self.losses_.append(loss)
         return self
 
     def net_input(self, X):
         """Calculate net input"""
-        return np.dot(X, self.w_) #+ self.b_
+        return np.dot(X, self.w_)
 
     def activation(self, X):
         """Compute linear activation"""
@@ -138,7 +135,6 @@ class LogisticRegressionGD:
         rgen = np.random.RandomState(self.random_state)
         self.w_ = rgen.normal(loc=0.0,
                               scale=0.01, size=X_bias.shape[1])
-        #self.b_ = np.float_(0.)
         self.losses_ = []
 
         for i in range(self.n_iter):
@@ -146,14 +142,21 @@ class LogisticRegressionGD:
             output = self.activation(net_input)
             errors = (y - output)
             self.w_ += self.eta * 2.0 * X_bias.T.dot(errors) / X_bias.shape[0]
-            #self.b_ += self.eta * 2.0 * errors.mean()
             loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / X.shape[0]
             self.losses_.append(loss)
         return self
 
+    # SGD for Task 4
+    def fit_SGD(self, X, y):
+        pass
+
+    # Mini-batch SGD for Task 4
+    def fit_batchSGD(self, X, y):
+        pass
+
     def net_input(self, X):
         """Calculate net input"""
-        return np.dot(X, self.w_) #+ self.b_
+        return np.dot(X, self.w_)
 
     def activation(self, z):
         """Compute logisitc sigmoid activation"""
