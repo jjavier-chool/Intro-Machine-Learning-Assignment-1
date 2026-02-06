@@ -147,9 +147,7 @@ class LogisticRegressionGD:
             errors = (y - output)
             self.w_ += self.eta * 2.0 * X_bias.T.dot(errors) / X_bias.shape[0]
             #self.b_ += self.eta * 2.0 * errors.mean()
-            loss = (-y.dot(np.log(output))
-                    - ((1 - y).dot(np.log(1 - output)))
-                    / X_bias.shape[0])
+            loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / X.shape[0]
             self.losses_.append(loss)
         return self
 

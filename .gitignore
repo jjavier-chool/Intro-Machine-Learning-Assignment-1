@@ -3,3 +3,6 @@ __pycache__/
 
 # Virtual environment
 adaline-env/
+
+# Saved Figures
+*.png
