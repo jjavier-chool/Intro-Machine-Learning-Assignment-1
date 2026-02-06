@@ -2,7 +2,6 @@
 The first assignment for CS429. Initial implementations of AdalineGD and LogisticRegressionGD are taken from the textbook.
 
 ## TODO:
-- Ensure Task2_Test.py is correct (fixed some stuff, probably good)
 - Task 3
 - Task 4 modification to AdalineAndLR.py + new test file
 - Report on Overleaf
