@@ -24,8 +24,8 @@ y_virginica = np.where(y == 'Iris-virginica', 1, 0)
 X_std = (X - X.mean(axis=0)) / X.std(axis=0)
 
 # Establishing number of epochs and learning rate value
-test_n = 100
-test_eta = 0.01
+test_n = 500
+test_eta = 0.001
 
 fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(12,8))
 
@@ -62,7 +62,7 @@ ax[2].set_xlabel('Epochs')
 ax[2].set_ylabel('Loss')
 ax[2].set_title('AdalineGD Virginica')
 
-X_bias = np.hstack([X, np.ones((X.shape[0], 1))])
+X_bias = np.hstack([X_std, np.ones((X_std.shape[0], 1))])
 setosa = ada_setosa.net_input(X_bias)
 versicolor = ada_versicolor.net_input(X_bias)
 virginica = ada_virginica.net_input(X_bias)
