@@ -148,11 +148,57 @@ class LogisticRegressionGD:
 
     # SGD for Task 4
     def fit_SGD(self, X, y):
-        pass
+        X_bias = np.hstack([X, np.ones((X.shape[0], 1))])
+
+        rgen = np.random.RandomState(self.random_state)
+        self.w_ = rgen.normal(loc=0.0,
+                              scale=0.01, size=X_bias.shape[1])
+        self.losses_ = []
+
+        for i in range(self.n_iter):
+            indices = rgen.permutation(X_bias.shape[0])
+            X_shuffled = X_bias[indices]
+            y_shuffled = y[indices]
+            losses = []
+            for xi, target in zip(X_shuffled, y_shuffled):
+              net_input = self.net_input(xi)
+              output = self.activation(net_input)
+              error = (target - output)
+              self.w_ += self.eta * 2.0 * xi * (error)
+              loss = (-target * np.log(output)) - ((1-target) * np.log(1-output))
+              losses.append(loss)
+            avg_loss = np.mean(losses)
+            self.losses_.append(avg_loss)
+        return self
 
     # Mini-batch SGD for Task 4
-    def fit_batchSGD(self, X, y):
-        pass
+    def fit_mini_batch_SGD(self, X, y, batch_size=32):
+        X_bias = np.hstack([X, np.ones((X.shape[0], 1))])
+
+        rgen = np.random.RandomState(self.random_state)
+        self.w_ = rgen.normal(loc=0.0,
+                              scale=0.01, size=X_bias.shape[1])
+        self.losses_ = []
+        n_samples = X_bias.shape[0]
+
+        for i in range(self.n_iter):
+            indices = rgen.permutation(n_samples)
+            X_shuffled = X_bias[indices]
+            y_shuffled = y[indices]
+            losses = []
+            for start in range(0, n_samples, batch_size):
+              end = start + batch_size
+              xb = X_shuffled[start:end]
+              yb = y_shuffled[start:end]
+
+              net_input = self.net_input(xb)
+              output = self.activation(net_input)
+              errors = yb - output
+              self.w_ += self.eta * 2.0 * xb.T.dot(errors) / xb.shape[0]
+              batch_loss = ((-yb.dot(np.log(output))) - ((1-yb).dot(np.log(1-output)))) / xb.shape[0]
+              losses.append(batch_loss)
+            self.losses_.append(np.mean(losses))
+        return self
 
     def net_input(self, X):
         """Calculate net input"""
