@@ -4,7 +4,7 @@ import numpy as np
 Intro to Machine Learning Assignment 1
 Encompasses the solution to Task 1 and the function
 implementation for Task 4.
-Students: Jackie Javier, e.t.c.
+Students: Jackie Javier, Pranitha Achanta
 Built from code provided by the textbook.
 """
 class AdalineGD:

@@ -7,7 +7,7 @@ from AdalineAndLR import LogisticRegressionGD
 """
 Intro to Machine Learning Assignment 1
 Encompasses the solution to Task 2.
-Students: Jackie Javier, e.t.c.
+Students: Jackie Javier, Pranitha Achanta
 Built from code provided by the textbook (pg42).
 """
 # Importing example data
@@ -18,7 +18,7 @@ wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wi
 
 # Use first 100 samples, setosa + versicolor (need binary)
 y_iris = iris.iloc[0:100, 4].values
-# Use first 129 samples, again to keep binary (?)
+# Use first 129 samples, again to keep binary
 y_wine = wine.iloc[0:129, 0].values
 
 # Convert labels to {0, 1}
@@ -38,50 +38,33 @@ X_wine_std = (X_wine - X_wine.mean(axis=0)) / X_wine.std(axis=0)
 test_n = 60
 test_eta = 0.01
 
-fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(12, 8))
-
 # Iris
 ada_iris = AdalineGD(n_iter=test_n, eta=test_eta).fit(X_iris_std, y_iris)
-ax[0][0].plot(
-    range(1, len(ada_iris.losses_) + 1),
-    ada_iris.losses_,
-    marker='o'
-)
-ax[0][0].set_xlabel('Epochs')
-ax[0][0].set_ylabel('Loss')
-ax[0][0].set_title('AdalineGD Iris')
-
 lr_iris = LogisticRegressionGD(n_iter=test_n, eta=test_eta).fit(X_iris_std, y_iris)
-ax[0][1].plot(
-    range(1, len(lr_iris.losses_) + 1),
-    lr_iris.losses_,
-    marker='o'
-)
-ax[0][1].set_xlabel('Epochs')
-ax[0][1].set_ylabel('Loss')
-ax[0][1].set_title('LogisticRegressionGD Iris')
 
 # Wine
 ada_wine = AdalineGD(n_iter=test_n, eta=test_eta).fit(X_wine_std, y_wine)
-ax[1][0].plot(
-    range(1, len(ada_wine.losses_) + 1),
-    ada_wine.losses_,
-    marker='o'
-)
-ax[1][0].set_xlabel('Epochs')
-ax[1][0].set_ylabel('Loss')
-ax[1][0].set_title('AdalineGD Wine')
-
 lr_wine = LogisticRegressionGD(n_iter=test_n, eta=test_eta).fit(X_wine_std, y_wine)
-ax[1][1].plot(
-    range(1, len(lr_wine.losses_) + 1),
-    lr_wine.losses_,
-    marker='o'
-)
-ax[1][1].set_xlabel('Epochs')
-ax[1][1].set_ylabel('Loss')
-ax[1][1].set_title('LogisticRegressionGD Wine')
 
+# Figures
+plt.figure(figsize=(6, 4))
+plt.plot(ada_iris.losses_, label='AdalineGD Iris')
+plt.plot(ada_wine.losses_, label='AdalineGD Wine')
+plt.xlabel('Epochs')
+plt.ylabel('MSE Loss')
+plt.title('AdalineGD Iris and Wine Loss Convergence Comparison')
+plt.legend()
 plt.tight_layout()
 plt.show()
-plt.savefig("task2.png")
+plt.savefig("task2_ada.png")
+
+plt.figure(figsize=(6, 4))
+plt.plot(lr_iris.losses_, label='LogisticRegressionGD Iris')
+plt.plot(lr_wine.losses_, label='LogisticRegressionGD Wine')
+plt.xlabel('Epochs')
+plt.ylabel('log Loss')
+plt.title('LogisticRegressionGD Iris and Wine Loss Convergence Comparison')
+plt.legend()
+plt.tight_layout()
+plt.show()
+plt.savefig("task2_lr.png")
