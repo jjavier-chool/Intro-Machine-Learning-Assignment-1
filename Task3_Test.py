@@ -6,7 +6,7 @@ from AdalineAndLR import AdalineGD
 """
 Intro to Machine Learning Assignment 1
 Encompasses the solution to Task 3.
-Students: Jackie Javier, Pranitha Achanta
+Students: Jackie Javier, Pranitha Achanta, Robert McDaniels
 """
 # Preparing the data
 iris = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data',

@@ -7,7 +7,7 @@ from AdalineAndLR import LogisticRegressionGD
 """
 Intro to Machine Learning Assignment 1
 Encompasses the testing of the solution to Task 4.
-Students: Jackie Javier, Pranitha Achanta
+Students: Jackie Javier, Pranitha Achanta, Robert McDaniels
 """
 # Preparing wine data
 wine = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data',

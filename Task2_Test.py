@@ -7,7 +7,7 @@ from AdalineAndLR import LogisticRegressionGD
 """
 Intro to Machine Learning Assignment 1
 Encompasses the solution to Task 2.
-Students: Jackie Javier, Pranitha Achanta
+Students: Jackie Javier, Pranitha Achanta, Robert McDaniels
 Built from code provided by the textbook (pg42).
 """
 # Importing example data
