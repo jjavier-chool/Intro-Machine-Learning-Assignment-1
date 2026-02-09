@@ -35,7 +35,7 @@ X_iris_std = (X_iris - X_iris.mean(axis=0)) / X_iris.std(axis=0)
 X_wine_std = (X_wine - X_wine.mean(axis=0)) / X_wine.std(axis=0)
 
 # Establishing number of epochs and learning rate value
-test_n = 60
+test_n = 100
 test_eta = 0.01
 
 # Iris
@@ -68,3 +68,16 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 plt.savefig("task2_lr.png")
+
+plt.figure(figsize=(6, 4))
+plt.plot(ada_iris.losses_, label='AdalineGD Iris')
+plt.plot(ada_wine.losses_, label='AdalineGD Wine')
+plt.plot(lr_iris.losses_, label='LogisticRegressionGD Iris')
+plt.plot(lr_wine.losses_, label='LogisticRegressionGD Wine')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('AdalineGD and LogisticRegressionGD Loss Convergence Comparison')
+plt.legend()
+plt.tight_layout()
+plt.show()
+plt.savefig("task2_compare.png")
