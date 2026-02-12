@@ -5,9 +5,7 @@ class LogisticRegressionGD:
         self.n_iter = n_iter
 
     def fit(self, X, y):
-        # Add bias column
         X = np.hstack([X, np.ones((X.shape[0], 1))])
-
         self.w_ = np.zeros(X.shape[1])
         self.losses_ = []
 
@@ -17,8 +15,6 @@ class LogisticRegressionGD:
             errors = y - output
 
             self.w_ += self.eta * X.T.dot(errors)
-
-            # Log-loss
             loss = -np.mean(y * np.log(output + 1e-8) +
                             (1 - y) * np.log(1 - output + 1e-8))
             self.losses_.append(loss)
@@ -34,3 +30,4 @@ class LogisticRegressionGD:
     def predict(self, X):
         X = np.hstack([X, np.ones((X.shape[0], 1))])
         return np.where(self.activation(self.net_input(X)) >= 0.5, 1, 0)
+
