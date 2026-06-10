@@ -136,14 +136,17 @@ class LogisticRegressionGD:
         self.w_ = rgen.normal(loc=0.0,
                               scale=0.01, size=X_bias.shape[1])
         self.losses_ = []
+        n_samples = X_bias.shape[0]
 
         for i in range(self.n_iter):
             net_input = self.net_input(X_bias)
             output = self.activation(net_input)
             errors = (y - output)
             self.w_ += self.eta * 2.0 * X_bias.T.dot(errors) / X_bias.shape[0]
-            loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / X.shape[0]
-            self.losses_.append(loss)
+            net_input = self.net_input(X_bias)
+            output = self.activation(net_input)
+            epoch_loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / n_samples
+            self.losses_.append(epoch_loss)
         return self
 
     # SGD for Task 4
@@ -154,21 +157,21 @@ class LogisticRegressionGD:
         self.w_ = rgen.normal(loc=0.0,
                               scale=0.01, size=X_bias.shape[1])
         self.losses_ = []
+        n_samples = X_bias.shape[0]
 
         for i in range(self.n_iter):
-            indices = rgen.permutation(X_bias.shape[0])
+            indices = rgen.permutation(n_samples)
             X_shuffled = X_bias[indices]
             y_shuffled = y[indices]
-            losses = []
             for xi, target in zip(X_shuffled, y_shuffled):
               net_input = self.net_input(xi)
               output = self.activation(net_input)
               error = (target - output)
               self.w_ += self.eta * 2.0 * xi * (error)
-              loss = (-target * np.log(output)) - ((1-target) * np.log(1-output))
-              losses.append(loss)
-            avg_loss = np.mean(losses)
-            self.losses_.append(avg_loss)
+            net_input = self.net_input(X_bias)
+            output = self.activation(net_input)
+            epoch_loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / n_samples
+            self.losses_.append(epoch_loss)
         return self
 
     # Mini-batch SGD for Task 4
@@ -185,9 +188,8 @@ class LogisticRegressionGD:
             indices = rgen.permutation(n_samples)
             X_shuffled = X_bias[indices]
             y_shuffled = y[indices]
-            losses = []
             for start in range(0, n_samples, batch_size):
-              end = start + batch_size
+              end = min(start + batch_size, n_samples)
               xb = X_shuffled[start:end]
               yb = y_shuffled[start:end]
 
@@ -195,9 +197,10 @@ class LogisticRegressionGD:
               output = self.activation(net_input)
               errors = yb - output
               self.w_ += self.eta * 2.0 * xb.T.dot(errors) / xb.shape[0]
-              batch_loss = ((-yb.dot(np.log(output))) - ((1-yb).dot(np.log(1-output)))) / xb.shape[0]
-              losses.append(batch_loss)
-            self.losses_.append(np.mean(losses))
+            net_input = self.net_input(X_bias)
+            output = self.activation(net_input)
+            epoch_loss = ((-y.dot(np.log(output))) - ((1-y).dot(np.log(1-output)))) / n_samples
+            self.losses_.append(epoch_loss)
         return self
 
     def net_input(self, X):

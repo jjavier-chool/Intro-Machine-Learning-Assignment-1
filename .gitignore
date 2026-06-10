@@ -5,5 +5,5 @@ __pycache__/
 adaline-env/
 
 # Saved Figures and text files
-*.png
+#*.png
 *.txt
